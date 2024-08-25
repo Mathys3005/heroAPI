@@ -1,17 +1,26 @@
 using heroAPI.Data;
-using heroAPI.Services;
+using heroAPI.Services.HeroService;
+using heroAPI.Services.PowerService;
+using heroAPI.Services.SchoolService;
+using heroAPI.Services.HeroPowerService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IHeroService, HeroService>();
 builder.Services.AddScoped<IPowerService, PowerService>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
+builder.Services.AddScoped<IHeroPowerService, HeroPowerService>();
 
 
 var app = builder.Build();

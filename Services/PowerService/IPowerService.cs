@@ -1,6 +1,6 @@
 ﻿using heroAPI.Models;
 
-namespace heroAPI.Services
+namespace heroAPI.Services.PowerService
 {
     public interface IPowerService
     {
@@ -9,6 +9,8 @@ namespace heroAPI.Services
         Task<Power> AddPowerAsync(Power power);
         Task<Power> UpdatePowerAsync(Power power);
         Task<Power> DeletePowerAsync(Power power);
+
+        Task<Power> GetPowerByIdWithHeroesAsync(int powerId);
 
     }
 }

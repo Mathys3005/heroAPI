@@ -1,6 +1,6 @@
 ﻿using heroAPI.Models;
 
-namespace heroAPI.Services
+namespace heroAPI.Services.HeroService
 {
     public interface IHeroService
     {
@@ -9,6 +9,8 @@ namespace heroAPI.Services
         Task<Hero> AddHeroAsync(Hero hero);
         Task<Hero> UpdateHeroAsync(Hero hero);
         Task<Hero> DeleteHeroAsync(Hero hero);
+
+        Task<Hero> GetHeroByIdWithPowersAsync(int heroId);
 
     }
 }
