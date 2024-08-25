@@ -2,7 +2,7 @@
 using heroAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace heroAPI.Services
+namespace heroAPI.Services.HeroService
 {
     public class HeroService : IHeroService
     {
@@ -20,7 +20,11 @@ namespace heroAPI.Services
 
         public async Task<Hero> GetHeroByIdAsync(int id)
         {
-            return await _context.Hero.FindAsync(id);
+            return await _context.Hero
+                .Include(h => h.HeroPowers)
+                .ThenInclude(hp => hp.Power)
+                .Include(h => h.School)
+                .FirstOrDefaultAsync(h => h.HeroId == id);
         }
 
         public async Task<Hero> AddHeroAsync(Hero hero)
@@ -43,6 +47,13 @@ namespace heroAPI.Services
             await _context.SaveChangesAsync();
             return hero;
         }
-       
+
+        public async Task<Hero> GetHeroByIdWithPowersAsync(int heroId)
+        {
+            return await _context.Hero
+                .Include(h => h.HeroPowers)
+                .ThenInclude(hp => hp.Power)
+                .FirstOrDefaultAsync(h => h.HeroId == heroId);
+        }
     }
 }

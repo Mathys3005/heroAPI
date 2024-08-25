@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using heroAPI.Data;
 
-namespace heroAPI.Services
+namespace heroAPI.Services.PowerService
 {
     public class PowerService : IPowerService
     {
@@ -44,5 +44,14 @@ namespace heroAPI.Services
             await _context.SaveChangesAsync();
             return power;
         }
+
+        public async Task<Power> GetPowerByIdWithHeroesAsync(int powerId)
+        {
+            return await _context.Power
+                                 .Include(p => p.HeroPowers)
+                                     .ThenInclude(hp => hp.Hero)
+                                 .FirstOrDefaultAsync(p => p.PowerId == powerId);
+        }
+
     }
 }

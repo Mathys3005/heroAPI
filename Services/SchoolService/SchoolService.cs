@@ -2,9 +2,9 @@
 using heroAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace heroAPI.Services
+namespace heroAPI.Services.SchoolService
 {
-    public class SchoolService
+    public class SchoolService : ISchoolService
     {
         private readonly DataContext _context;
 
