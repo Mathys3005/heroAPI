@@ -125,7 +125,7 @@ namespace heroAPI.Controllers
             return Ok(power);
         }
 
-        [HttpGet("{powerId}")]
+        [HttpGet("{powerId}/heroes")]
         public async Task<ActionResult<Power>> GetPowerWithHeroes(int powerId)
         {
             var power = await _powerService.GetPowerByIdWithHeroesAsync(powerId);
