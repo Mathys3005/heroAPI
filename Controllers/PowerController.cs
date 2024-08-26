@@ -1,5 +1,4 @@
 ﻿using heroAPI.Models;
-using heroAPI.Services.HeroPowerService;
 using heroAPI.Services.HeroService;
 using heroAPI.Services.PowerService;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +13,9 @@ namespace heroAPI.Controllers
     public class PowerController : ControllerBase
     {
         private readonly IPowerService _powerService;
-        private readonly IHeroPowerService _heroPowerService;
-        private readonly IHeroService _heroService;
-        public PowerController(IPowerService powerService, IHeroPowerService heroPowerService, IHeroService heroService)
+        public PowerController(IPowerService powerService)
         {
             _powerService = powerService;
-            _heroPowerService = heroPowerService;
-            _heroService = heroService;
         }
 
         // GET: api/power
@@ -96,46 +91,6 @@ namespace heroAPI.Controllers
             return NoContent();
         }
 
-        [HttpPost("{powerId}/heroes")]
-        public async Task<ActionResult<Power>> AddHeroesToPower(int powerId, List<int> heroIds)
-        {
-            var power = await _powerService.GetPowerByIdAsync(powerId);
-            if (power == null)
-            {
-                return NotFound();
-            }
-
-            foreach (var heroId in heroIds)
-            {
-                var hero = await _heroService.GetHeroByIdAsync(heroId);
-                if (hero == null)
-                {
-                    return NotFound($"Hero with id {heroId} not found");
-                }
-
-                var heroPower = new HeroPower
-                {
-                    HeroId = heroId,
-                    PowerId = powerId
-                };
-
-                await _heroPowerService.AddHeroPowerAsync(heroPower);
-            }
-
-            return Ok(power);
-        }
-
-        [HttpGet("{powerId}/heroes")]
-        public async Task<ActionResult<Power>> GetPowerWithHeroes(int powerId)
-        {
-            var power = await _powerService.GetPowerByIdWithHeroesAsync(powerId);
-            if (power == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(power);
-        }
     }
 }
 

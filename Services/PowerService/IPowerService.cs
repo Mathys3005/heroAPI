@@ -10,8 +10,6 @@ namespace heroAPI.Services.PowerService
         Task<Power> UpdatePowerAsync(Power power);
         Task<Power> DeletePowerAsync(Power power);
 
-        Task<Power> GetPowerByIdWithHeroesAsync(int powerId);
-
     }
 }
 

@@ -44,14 +44,5 @@ namespace heroAPI.Services.PowerService
             await _context.SaveChangesAsync();
             return power;
         }
-
-        public async Task<Power> GetPowerByIdWithHeroesAsync(int powerId)
-        {
-            return await _context.Power
-                                 .Include(p => p.HeroPowers)
-                                     .ThenInclude(hp => hp.Hero)
-                                 .FirstOrDefaultAsync(p => p.PowerId == powerId);
-        }
-
     }
 }

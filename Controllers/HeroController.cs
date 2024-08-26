@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using heroAPI.Models;
 using heroAPI.Services.HeroService;
 using heroAPI.Services.PowerService;
-using heroAPI.Services.HeroPowerService;
 
 namespace heroAPI.Controllers
 {
@@ -12,14 +11,10 @@ namespace heroAPI.Controllers
     {
         private readonly IHeroService _heroService;
 
-        private readonly IPowerService _powerService;
-        private readonly IHeroPowerService _heroPowerService;
 
-        public HeroController(IHeroService heroService, IPowerService powerService, IHeroPowerService heroPowerService)
+        public HeroController(IHeroService heroService)
         {
             _heroService = heroService;
-            _powerService = powerService;
-            _heroPowerService = heroPowerService;
         }
 
         [HttpGet]
@@ -70,48 +65,6 @@ namespace heroAPI.Controllers
 
             await _heroService.DeleteHeroAsync(hero);
             return NoContent();
-        }
-
-        
-        [HttpPost("{heroId}/powers")]
-        public async Task<ActionResult<Hero>> AddPowersToHero(int heroId, List<int> powerIds)
-        {
-            var hero = await _heroService.GetHeroByIdAsync(heroId);
-            if (hero == null)
-            {
-                return NotFound();
-            }
-
-            foreach (var powerId in powerIds)
-            {
-                var power = await _powerService.GetPowerByIdAsync(powerId);
-                if (power == null)
-                {
-                    return NotFound($"Power with id {powerId} not found");
-                }
-
-                var heroPower = new HeroPower
-                {
-                    HeroId = heroId,
-                    PowerId = powerId
-                };
-
-                await _heroPowerService.AddHeroPowerAsync(heroPower);
-            }
-
-            return Ok(hero);
-        }
-
-        [HttpGet("{heroId}/powers")]
-        public async Task<ActionResult<Hero>> GetHeroWithPowers(int heroId)
-        {
-            var hero = await _heroService.GetHeroByIdWithPowersAsync(heroId);
-            if (hero == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(hero);
         }
     }
 }
