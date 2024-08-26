@@ -2,7 +2,6 @@ using heroAPI.Data;
 using heroAPI.Services.HeroService;
 using heroAPI.Services.PowerService;
 using heroAPI.Services.SchoolService;
-using heroAPI.Services.HeroPowerService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +19,6 @@ builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IHeroService, HeroService>();
 builder.Services.AddScoped<IPowerService, PowerService>();
 builder.Services.AddScoped<ISchoolService, SchoolService>();
-builder.Services.AddScoped<IHeroPowerService, HeroPowerService>();
 
 
 var app = builder.Build();

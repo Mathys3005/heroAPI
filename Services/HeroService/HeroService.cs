@@ -21,9 +21,7 @@ namespace heroAPI.Services.HeroService
         public async Task<Hero> GetHeroByIdAsync(int id)
         {
             return await _context.Hero
-                .Include(h => h.HeroPowers)
-                .ThenInclude(hp => hp.Power)
-                .Include(h => h.School)
+                .Include(h => h.Powers) 
                 .FirstOrDefaultAsync(h => h.HeroId == id);
         }
 
@@ -46,14 +44,6 @@ namespace heroAPI.Services.HeroService
             _context.Hero.Remove(hero);
             await _context.SaveChangesAsync();
             return hero;
-        }
-
-        public async Task<Hero> GetHeroByIdWithPowersAsync(int heroId)
-        {
-            return await _context.Hero
-                .Include(h => h.HeroPowers)
-                .ThenInclude(hp => hp.Power)
-                .FirstOrDefaultAsync(h => h.HeroId == heroId);
         }
     }
 }

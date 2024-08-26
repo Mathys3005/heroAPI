@@ -10,7 +10,5 @@ namespace heroAPI.Services.HeroService
         Task<Hero> UpdateHeroAsync(Hero hero);
         Task<Hero> DeleteHeroAsync(Hero hero);
 
-        Task<Hero> GetHeroByIdWithPowersAsync(int heroId);
-
     }
 }

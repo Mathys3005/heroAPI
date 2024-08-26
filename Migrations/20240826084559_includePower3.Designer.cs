@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using heroAPI.Data;
 
@@ -11,9 +12,11 @@ using heroAPI.Data;
 namespace heroAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240826084559_includePower3")]
+    partial class includePower3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,14 +30,14 @@ namespace heroAPI.Migrations
                     b.Property<int>("HeroId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PowersPowerId")
+                    b.Property<int>("PowerId")
                         .HasColumnType("int");
 
-                    b.HasKey("HeroId", "PowersPowerId");
+                    b.HasKey("HeroId", "PowerId");
 
-                    b.HasIndex("PowersPowerId");
+                    b.HasIndex("PowerId");
 
-                    b.ToTable("HeroPowers", (string)null);
+                    b.ToTable("HeroPower");
                 });
 
             modelBuilder.Entity("heroAPI.Models.Hero", b =>
@@ -106,7 +109,7 @@ namespace heroAPI.Migrations
 
                     b.HasOne("heroAPI.Models.Power", null)
                         .WithMany()
-                        .HasForeignKey("PowersPowerId")
+                        .HasForeignKey("PowerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

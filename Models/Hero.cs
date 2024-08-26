@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public int HeroId { get; set; }
 
-        public virtual ICollection<HeroPower>? HeroPowers { get; set; }
+        public ICollection<Power>? Powers { get; set; } 
 
         public int? SchoolId { get; set; }
         public virtual School? School { get; set; }

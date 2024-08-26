@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using heroAPI.Data;
 
@@ -11,9 +12,11 @@ using heroAPI.Data;
 namespace heroAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240826072900_enleverinclude")]
+    partial class enleverinclude
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace heroAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HeroPower", b =>
-                {
-                    b.Property<int>("HeroId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PowersPowerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("HeroId", "PowersPowerId");
-
-                    b.HasIndex("PowersPowerId");
-
-                    b.ToTable("HeroPowers", (string)null);
-                });
 
             modelBuilder.Entity("heroAPI.Models.Hero", b =>
                 {
@@ -57,6 +45,21 @@ namespace heroAPI.Migrations
                     b.HasIndex("SchoolId");
 
                     b.ToTable("Hero");
+                });
+
+            modelBuilder.Entity("heroAPI.Models.HeroPower", b =>
+                {
+                    b.Property<int>("HeroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PowerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HeroId", "PowerId");
+
+                    b.HasIndex("PowerId");
+
+                    b.ToTable("HeroPowers");
                 });
 
             modelBuilder.Entity("heroAPI.Models.Power", b =>
@@ -96,21 +99,6 @@ namespace heroAPI.Migrations
                     b.ToTable("School");
                 });
 
-            modelBuilder.Entity("HeroPower", b =>
-                {
-                    b.HasOne("heroAPI.Models.Hero", null)
-                        .WithMany()
-                        .HasForeignKey("HeroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("heroAPI.Models.Power", null)
-                        .WithMany()
-                        .HasForeignKey("PowersPowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("heroAPI.Models.Hero", b =>
                 {
                     b.HasOne("heroAPI.Models.School", "School")
@@ -118,6 +106,35 @@ namespace heroAPI.Migrations
                         .HasForeignKey("SchoolId");
 
                     b.Navigation("School");
+                });
+
+            modelBuilder.Entity("heroAPI.Models.HeroPower", b =>
+                {
+                    b.HasOne("heroAPI.Models.Hero", "Hero")
+                        .WithMany("HeroPowers")
+                        .HasForeignKey("HeroId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("heroAPI.Models.Power", "Power")
+                        .WithMany("HeroPowers")
+                        .HasForeignKey("PowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Hero");
+
+                    b.Navigation("Power");
+                });
+
+            modelBuilder.Entity("heroAPI.Models.Hero", b =>
+                {
+                    b.Navigation("HeroPowers");
+                });
+
+            modelBuilder.Entity("heroAPI.Models.Power", b =>
+                {
+                    b.Navigation("HeroPowers");
                 });
 
             modelBuilder.Entity("heroAPI.Models.School", b =>
